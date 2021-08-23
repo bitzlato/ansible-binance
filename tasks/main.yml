@@ -1,0 +1,4 @@
+---
+- import_tasks: install_pre-build_binaries.yml
+- import_tasks: configure.yml
+

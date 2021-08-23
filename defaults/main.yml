@@ -1,0 +1,12 @@
+---
+binance_user_name: ubuntu
+binance_sevice_name: bsc
+binance_root: /home/{{ binance_user_name }}/bsc
+binance_config: "{{ binance_root }}/config.toml"
+binance_datadir: "{{ binance_root}}/bsc_data"
+binance_geth_path: "{{ binance_root }}/geth_linux"
+binance_service_dir: /home/{{ binance_user_name }}/.config/systemd/user/
+binance_url: https://github.com/binance-chain/bsc/releases/download/v1.1.0/geth_linux
+binance_config_url: https://github.com/binance-chain/bsc/releases/download/v1.1.0-beta/mainnet.zip
+binance_httpport: 8545
+binance_wsport: 8546

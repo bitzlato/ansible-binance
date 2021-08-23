@@ -1,0 +1,69 @@
+---
+- name: "Create {{ binance_user_name }} user"
+  user:
+    name: "{{ binance_user_name }}"
+    home: "/home/{{ binance_user_name }}"
+    shell: /bin/bash
+    system: yes
+
+- name: "Creates directory"
+  file:
+    path: "/home/{{ binance_user_name }}"
+    state: directory
+    owner: "{{ binance_user_name }}"
+    group: "{{ binance_user_name }}"
+    mode: 0755
+  with_items:
+    - "{{ binance_datadir }}"
+    - "{{ binance_service_dir }}"
+
+- name: "Download pre-build binaries geth_linux"
+  get_url:
+    url: "{{ binance_url }}"
+    dest: "{{ binance_root  }}"
+    owner: "{{ binance_user_name }}"
+    group: "{{ binance_user_name }}"
+    mode: 0755
+
+- name: "Download the config files"
+  ansible.builtin.unarchive:
+    src: "{{ binance_config_url }}"
+    dest: "{{ binance_root  }}"
+    owner: "{{ binance_user_name }}"
+    group: "{{ binance_user_name }}"
+    mode: 0400
+    remote_src: yes
+
+    #- name: "Remove block from config"
+    #  blockinfile:
+    #    path: "{{ binance_config }}"
+    #    marker: "[Eth.GPO]"
+    #    block: ""
+
+- name: "Replace a HTTPHost"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^HTTPHost*'
+    line: "HTTPHost = {{ binance_httphost }}"
+    backrefs: yes
+
+- name: "Replace a HTTPPort"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^HTTPPort*'
+    line: "HTTPPort = {{ binance_httpport }}"
+    backrefs: yes
+
+- name: "Replace a HTTPModules"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^HTTPModules*'
+    line: 'HTTPModules = ["eth", "net", "web3", "personal", "txpool", "parlia"]'
+    backrefs: yes
+
+- name: "Replace a WSPort"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^WSPort*'
+    line: "WSPort = {{ binance_wsport }}"
+    backrefs: yes
