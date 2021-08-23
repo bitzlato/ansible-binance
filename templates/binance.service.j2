@@ -5,8 +5,6 @@ After=network.target
 [Service]
 # run as root, set base_path in binance.toml
 ExecStart={{ binance_geth_path }} --config {{ binance_config }}  -datadir {{ binance_datadir }}
-User=ubuntu
-Group=ubuntu
 Restart=on-failure
 
 # Specifies which signal to use when killing a service. Defaults to SIGTERM.
