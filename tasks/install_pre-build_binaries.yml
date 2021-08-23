@@ -34,11 +34,11 @@
     mode: 0400
     remote_src: yes
 
-    #- name: "Remove block from config"
-    #  blockinfile:
-    #    path: "{{ binance_config }}"
-    #    marker: "[Eth.GPO]"
-    #    block: ""
+- name: "Remove block from config"
+  blockinfile:
+    path: "{{ binance_config }}"
+    marker: "[Eth.GPO]"
+    block: ""
 
 - name: "Replace a HTTPHost"
   lineinfile:
