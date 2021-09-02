@@ -1,6 +1,7 @@
 ---
 - name: "Writes genesis state locally if it not exist"
   become: yes
+  become_user: "{{ binance_user_name }}"
   command:
     cmd: "{{ binance_geth_path }} --datadir {{ binance_datadir }} init {{ binance_root }}/genesis.json"
     creates: "{{ binance_datadir }}/geth"

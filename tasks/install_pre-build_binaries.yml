@@ -7,20 +7,22 @@
     system: yes
 
 - name: "Creates directory"
-  file:
-    path: "/home/{{ binance_user_name }}"
+  ansible.builtin.file:
+    path: "{{ item }}"
     state: directory
     owner: "{{ binance_user_name }}"
     group: "{{ binance_user_name }}"
     mode: 0755
-  with_items:
+    recurse: yes
+  loop:
+    - "{{ binance_root }}"
     - "{{ binance_datadir }}"
     - "{{ binance_service_dir }}"
 
 - name: "Download pre-build binaries geth_linux"
   get_url:
     url: "{{ binance_url }}"
-    dest: "{{ binance_root  }}"
+    dest: "{{ binance_root }}"
     owner: "{{ binance_user_name }}"
     group: "{{ binance_user_name }}"
     mode: 0755
@@ -28,7 +30,7 @@
 - name: "Download the config files"
   ansible.builtin.unarchive:
     src: "{{ binance_config_url }}"
-    dest: "{{ binance_root  }}"
+    dest: "{{ binance_root }}"
     owner: "{{ binance_user_name }}"
     group: "{{ binance_user_name }}"
     mode: 0400
@@ -44,7 +46,7 @@
   lineinfile:
     path: "{{ binance_config }}"
     regexp: '^HTTPHost*'
-    line: "HTTPHost = {{ binance_httphost }}"
+    line: 'HTTPHost = "{{ binance_httphost }}"'
     backrefs: yes
 
 - name: "Replace a HTTPPort"
