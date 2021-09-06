@@ -11,3 +11,4 @@ binance_url: "https://github.com/binance-chain/bsc/releases/download/v{{ binance
 binance_config_url: "https://github.com/binance-chain/bsc/releases/download/v{{ binance_releases }}/mainnet.zip"
 binance_httpport: 8545
 binance_wsport: 8546
+binance_httphost: '172.16.0.66'
