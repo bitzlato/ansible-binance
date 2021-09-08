@@ -12,3 +12,5 @@ binance_config_url: "https://github.com/binance-chain/bsc/releases/download/v{{ 
 binance_httpport: 8545
 binance_wsport: 8546
 binance_httphost: '127.0.0.1'
+binance_service_enabled: 'No' # yes
+binance_service_state: 'stopped' # started
