@@ -36,12 +36,6 @@
     mode: 0400
     remote_src: yes
 
-- name: "Remove block from config"
-  ini_file:
-    path: "{{ binance_config }}"
-    section: Eth.GPO
-    state: absent
-
 - name: "Replace a HTTPHost"
   lineinfile:
     path: "{{ binance_config }}"
