@@ -1,4 +1,3 @@
 ---
-- import_tasks: install_pre-build_binaries.yml
-- import_tasks: configure.yml
-
+- import_tasks: preparation_and_compile.yml
+- import_tasks: service_creation.yml

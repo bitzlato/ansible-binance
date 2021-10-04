@@ -19,6 +19,9 @@
     - "{{ binance_datadir }}"
     - "{{ binance_service_dir }}"
 
+- name: Enable linger for {{ binance_user_name }}
+  command: "loginctl enable-linger {{binance_user_name}}"
+
 - name: "Download pre-build binaries geth_linux"
   get_url:
     url: "{{ binance_url }}"
