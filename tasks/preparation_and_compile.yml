@@ -43,8 +43,15 @@
   lineinfile:
     path: "{{ binance_config }}"
     regexp: '^HTTPHost*'
-    line: 'HTTPHost = "{{ binance_httphost }}"'
+    line: "HTTPHost = {{ binance_httphost }}"
     backrefs: yes
+
+- name: "Replace a GasPrice"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^GasPrice*'
+    line: "GasPrice = {{ binance_gasprice }}"
+    backrefs: yes    
 
 - name: "Replace a HTTPPort"
   lineinfile:
