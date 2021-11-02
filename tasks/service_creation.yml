@@ -17,11 +17,20 @@
   register: the_user_uid
   check_mode: no # Run even in check mode, otherwise the playbook fails with --check.
   changed_when: false
+  become: yes
+  become_user: "{{ binance_user_name }}"
 
 - name: "Determine XDG_RUNTIME_DIR"
   set_fact:
     xdg_runtime_dir: "/run/user/{{ the_user_uid.stdout }}"
   changed_when: false
+  become: yes
+  become_user: "{{ binance_user_name }}"
+
+- name: "Update bashrc for {{ binance_user_name }}"
+  lineinfile:
+    path: "/home/{{ binance_user_name }}/.bashrc"
+    line: "export XDG_RUNTIME_DIR=/run/user/{{ the_user_uid.stdout }}"
 
 - name: "Start and enable {{ binance_sevice_name }} service"
   become: true
