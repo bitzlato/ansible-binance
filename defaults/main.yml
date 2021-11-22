@@ -1,7 +1,7 @@
 ---
 binance_user_name: bsc
 binance_sevice_name: bsc
-binance_releases: 1.1.3
+binance_releases: 1.1.4
 binance_root: "/home/{{ binance_user_name }}/bsc"
 binance_config: "{{ binance_root }}/config.toml"
 binance_datadir: "{{ binance_root}}/bsc_data"
@@ -11,7 +11,7 @@ binance_url: "https://github.com/binance-chain/bsc/releases/download/v{{ binance
 binance_config_url: "https://github.com/binance-chain/bsc/releases/download/v{{ binance_releases }}/mainnet.zip"
 binance_httpport: 8545
 binance_wsport: 8546
-binance_httphost: '127.0.0.1'
+binance_httphost: '"127.0.0.1"'
 binance_gasprice: 5000000000
 binance_service_enabled: 'No' # yes
 binance_service_state: 'stopped' # started
