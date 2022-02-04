@@ -1,4 +1,4 @@
-# Ansible Role: Binance Smart Chain # Ansible Role:  
+# Ansible Role: Binance Smart Chain:  
 Installs Binance Smart Chain Fullnode on Debian/Ubuntu servers.
 
 This role installs and configures Binance Smart Chain Fullnode. You will likely need to do extra setup work before this role has installed Binance Smart Chain Fullnode, like changing  binance_httphost variabel, describing the location and options to use for your particular node.
