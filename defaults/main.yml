@@ -1,14 +1,16 @@
 ---
 binance_user_name: bsc
 binance_sevice_name: bsc
-binance_releases: 1.1.4
+binance_releases: 1.1.8
+binance_net: mainnet
+binance_home: "/home/{{ binance_user_name }}"
 binance_root: "/home/{{ binance_user_name }}/bsc"
-binance_config: "{{ binance_root }}/config.toml"
+binance_config: "{{ binance_root }}/{{ binance_net }}"
 binance_datadir: "{{ binance_root}}/bsc_data"
 binance_geth_path: "{{ binance_root }}/geth_linux"
 binance_service_dir: "/home/{{ binance_user_name }}/.config/systemd/user/"
 binance_url: "https://github.com/binance-chain/bsc/releases/download/v{{ binance_releases }}/geth_linux"
-binance_config_url: "https://github.com/binance-chain/bsc/releases/download/v{{ binance_releases }}/mainnet.zip"
+binance_config_url: "https://github.com/bnb-chain/bsc/releases/download/v{{ binance_releases }}/{{ binance_net }}.zip"
 binance_httpport: 8545
 binance_wsport: 8546
 binance_httphost: '"127.0.0.1"'

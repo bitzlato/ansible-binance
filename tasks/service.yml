@@ -1,16 +1,9 @@
 ---
-- name: "Writes genesis state locally if it not exist"
-  become: yes
-  become_user: "{{ binance_user_name }}"
-  command:
-    cmd: "{{ binance_geth_path }} --datadir {{ binance_datadir }} init {{ binance_root }}/genesis.json"
-    creates: "{{ binance_datadir }}/geth"
-
 - name: "Create {{ binance_sevice_name }} systemd service"
   template:
     src: binance.service.j2
     dest: "{{ binance_service_dir }}/{{ binance_sevice_name }}.service"
-    mode: 0644
+    mode: '0644'
 
 - name: "Find uid of {{ binance_user_name }}"
   command: "id -u {{ binance_user_name }}"
@@ -43,21 +36,3 @@
     name: "{{ binance_sevice_name }}.service"
     enabled: "{{ binance_service_enabled }}"
     state: "{{ binance_service_state }}"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,12 @@
+---
+- name: "Create {{ binance_user_name }} user"
+  user:
+    name: "{{ binance_user_name }}"
+    createhome: yes
+    home: "/home/{{ binance_user_name }}"
+    shell: /bin/bash
+    system: yes
+
+- name: "Enable linger for {{ binance_user_name }}"
+  command: "loginctl enable-linger {{binance_user_name}}"
+  become: yes

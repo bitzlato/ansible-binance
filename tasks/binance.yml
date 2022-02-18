@@ -1,0 +1,64 @@
+- name: "Downloading pre-build binaries geth_linux"
+  get_url:
+    url: "{{ binance_url }}"
+    dest: "{{ binance_root }}"
+    owner: "{{ binance_user_name }}"
+    group: "{{ binance_user_name }}"
+    mode: '0700'
+
+- name: "Creating symlink for geth"
+  file:
+    src: "{{ binance_geth_path }}"
+    dest: "{{ binance_home }}/bin/geth"
+    state: link
+  become: true
+  become_user: "{{ binance_user_name }}"
+
+- name: "Downloading the config files"
+  ansible.builtin.unarchive:
+    src: "{{ binance_config_url }}"
+    dest: "{{ binance_root }}"
+    owner: "{{ binance_user_name }}"
+    group: "{{ binance_user_name }}"
+    mode: '0600'
+    remote_src: yes
+
+- name: "Changing permissions of a config directory"
+  file:
+    path: "{{ binance_config }}"
+    mode: '0700'
+
+- name: "Writing genesis state locally if it does not exist"
+  become: yes
+  become_user: "{{ binance_user_name }}"
+  command:
+    cmd: "{{ binance_geth_path }} --datadir {{ binance_datadir }} init {{ binance_config }}/genesis.json"
+    creates: "{{ binance_datadir }}/geth"
+
+- name: "Replacing a HTTPHost"
+  lineinfile:
+    path: "{{ binance_config }}/config.toml"
+    regexp: '^HTTPHost*'
+    line: "HTTPHost = {{ binance_httphost }}"
+    backrefs: yes
+
+- name: "Replacing a GasPrice"
+  lineinfile:
+    path: "{{ binance_config }}/config.toml"
+    regexp: '^GasPrice*'
+    line: "GasPrice = {{ binance_gasprice }}"
+    backrefs: yes
+
+- name: "Replacing a HTTPPort"
+  lineinfile:
+    path: "{{ binance_config }}/config.toml"
+    regexp: '^HTTPPort*'
+    line: "HTTPPort = {{ binance_httpport }}"
+    backrefs: yes
+
+- name: "Replacing a HTTPModules"
+  lineinfile:
+    path: "{{ binance_config }}/config.toml"
+    regexp: '^HTTPModules*'
+    line: 'HTTPModules = ["eth", "net", "web3", "personal", "txpool", "parlia"]'
+    backrefs: yes

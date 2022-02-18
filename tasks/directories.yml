@@ -1,0 +1,13 @@
+- name: "Creates directory"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ binance_user_name }}"
+    group: "{{ binance_user_name }}"
+    mode: 0755
+    recurse: yes
+  loop:
+    - "{{ binance_root }}"
+    - "{{ binance_datadir }}"
+    - "{{ binance_service_dir }}"
+    - "{{ binance_home }}/bin"
