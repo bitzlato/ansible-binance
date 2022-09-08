@@ -1,0 +1,82 @@
+---
+- name: "Create {{ binance_user_name }} user"
+  user:
+    name: "{{ binance_user_name }}"
+    home: "/home/{{ binance_user_name }}"
+    shell: /bin/bash
+    system: yes
+
+- name: "Creates directory"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ binance_user_name }}"
+    group: "{{ binance_user_name }}"
+    mode: 0755
+    recurse: yes
+  loop:
+    - "{{ binance_root }}"
+    - "{{ binance_datadir }}"
+    - "{{ binance_service_dir }}"
+
+- name: Enable linger for {{ binance_user_name }}
+  command: "loginctl enable-linger {{binance_user_name}}"
+
+- name: "Download pre-build binaries geth_linux"
+  get_url:
+    url: "{{ binance_url }}"
+    dest: "{{ binance_root }}"
+    owner: "{{ binance_user_name }}"
+    group: "{{ binance_user_name }}"
+    mode: 0755
+
+- name: "Download the config files"
+  ansible.builtin.unarchive:
+    src: "{{ binance_config_url }}"
+    dest: "{{ binance_root }}"
+    owner: "{{ binance_user_name }}"
+    group: "{{ binance_user_name }}"
+    mode: 0400
+    remote_src: yes
+
+- name: "Replace a HTTPHost"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^HTTPHost*'
+    line: "HTTPHost = {{ binance_httphost }}"
+    backrefs: yes
+
+- name: "Replace a GasPrice"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^GasPrice*'
+    line: "GasPrice = {{ binance_gasprice }}"
+    backrefs: yes    
+
+- name: "Replace a HTTPPort"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^HTTPPort*'
+    line: "HTTPPort = {{ binance_httpport }}"
+    backrefs: yes
+
+- name: "Replace a HTTPModules"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^HTTPModules*'
+    line: 'HTTPModules = ["eth", "net", "web3", "personal", "txpool", "parlia"]'
+    backrefs: yes
+
+- name: "Replace a WSPort"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^WSPort*'
+    line: "WSPort = {{ binance_wsport }}"
+    backrefs: yes
+
+- name: "Replace a ListenAddr"
+  lineinfile:
+    path: "{{ binance_config }}"
+    regexp: '^ListenAddr*'
+    line: 'ListenAddr = "{{ binance_listen_addr }}"'
+    backrefs: yes

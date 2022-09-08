@@ -1,0 +1,63 @@
+---
+- name: "Writes genesis state locally if it not exist"
+  become: yes
+  become_user: "{{ binance_user_name }}"
+  command:
+    cmd: "{{ binance_geth_path }} --datadir {{ binance_datadir }} init {{ binance_root }}/genesis.json"
+    creates: "{{ binance_datadir }}/geth"
+
+- name: "Create {{ binance_sevice_name }} systemd service"
+  template:
+    src: binance.service.j2
+    dest: "{{ binance_service_dir }}/{{ binance_sevice_name }}.service"
+    mode: 0644
+
+- name: "Find uid of {{ binance_user_name }}"
+  command: "id -u {{ binance_user_name }}"
+  register: the_user_uid
+  check_mode: no # Run even in check mode, otherwise the playbook fails with --check.
+  changed_when: false
+  become: yes
+  become_user: "{{ binance_user_name }}"
+
+- name: "Determine XDG_RUNTIME_DIR"
+  set_fact:
+    xdg_runtime_dir: "/run/user/{{ the_user_uid.stdout }}"
+  changed_when: false
+  become: yes
+  become_user: "{{ binance_user_name }}"
+
+- name: "Update bashrc for {{ binance_user_name }}"
+  lineinfile:
+    path: "/home/{{ binance_user_name }}/.bashrc"
+    line: "export XDG_RUNTIME_DIR=/run/user/{{ the_user_uid.stdout }}"
+
+- name: "Start and enable {{ binance_sevice_name }} service"
+  become: true
+  become_user: "{{ binance_user_name }}"
+  environment:
+    XDG_RUNTIME_DIR: "{{ xdg_runtime_dir }}"
+  systemd:
+    scope: user
+    daemon_reload: yes
+    name: "{{ binance_sevice_name }}.service"
+    enabled: "{{ binance_service_enabled }}"
+    state: "{{ binance_service_state }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

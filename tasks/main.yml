@@ -1,0 +1,3 @@
+---
+- import_tasks: preparation_and_compile.yml
+- import_tasks: service_creation.yml
