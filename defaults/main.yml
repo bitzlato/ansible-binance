@@ -1,7 +1,7 @@
 ---
 binance_user_name: bsc
 binance_sevice_name: bsc
-binance_releases: 1.1.3
+binance_releases: 1.1.12
 binance_root: "/home/{{ binance_user_name }}/bsc"
 binance_config: "{{ binance_root }}/config.toml"
 binance_datadir: "{{ binance_root}}/bsc_data"
@@ -14,5 +14,6 @@ binance_wsport: 8546
 binance_httphost: '127.0.0.1'
 binance_listen_addr: ":30311" 
 binance_gasprice: 5000000000
+binance_service_additional_parameter: "--syncmode full --pruneancient --http.vhosts *"
 binance_service_enabled: 'No' # yes
 binance_service_state: 'stopped' # started
